@@ -9,20 +9,9 @@ with open('coco.names','r') as f:
 cap = cv2.VideoCapture(0)
 
 
-def move_motor_x_small():
-    print("Small X")
+def move_motor():
+    print("movement")
 
-
-def move_motor_x_large():
-    print("Large X")
-
-
-def move_motor_y_small():
-    print("Small y")
-
-
-def move_motor_y_large():
-    print("Large y")
 
 
 while True:
@@ -54,6 +43,7 @@ while True:
                 h = int(detection[3] * height)
                 x = int(center_x - w / 2)
                 y = int(center_y - h / 2)
+                print(x, y)
                 if class_id == 0:
                     current_area = w*h
                     if current_area > highest_area:
@@ -90,22 +80,40 @@ while True:
             target_y = y + 0.5*h
             current_x = 320
             current_y = 240
-            if abs(target_x - current_x) > 10 and abs(target_x - current_x) > 70:
-                move_motor_x_large()
-            elif abs(target_x - current_x) > 10:
-                move_motor_x_small()
+            if target_x - current_x > 10 and target_x - current_x > 50:   #large right
+                move_motor()
+                continue
+            elif target_x - current_x > 10:    #small right
+                move_motor()
+                continue
+            elif current_x - target_x > 10 and current_x - target_x > 50:   #large left
+                move_motor()
+                continue
+            elif target_x - current_x > 10:    #small left
+                move_motor()
+                continue
             else:
                 print("X Position Reached")
 
-            if abs(target_y - current_y) > 10 and abs(target_y - current_y) > 70:
-                move_motor_y_large()
-            elif abs(target_y - current_y) > 10:
-                move_motor_y_small()
+            if target_y - current_y > 10 and target_y - current_y > 50:   #large up
+                move_motor()
+                continue
+            elif target_y - current_y > 10:    #small up
+                move_motor()
+                continue
+            elif current_y - target_y > 10 and current_y - target_y > 50:   #large down
+                move_motor()
+                continue
+            elif target_y - current_y > 10:    #small down
+                move_motor()
+                continue
             else:
                 print("Y Position Reached")
 
+
+
         cv2.imshow('Image', img)
-        time.sleep(0.5)
+        time.sleep(1)
         key = cv2.waitKey(1)
         if key == 27:
             break
